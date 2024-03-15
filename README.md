@@ -34,7 +34,7 @@ Cellpose output images are PNG, with the original filename + the suffix "_cp_mas
 
 After segmentation, and within the same script, we reload each "cp_mask" image and run an erode function on each mask, and save a new set of corresponding images with the suffix "filtered_cp_masks". 
 
-These filtered mask images are then imported into Fiji. In these images, masks are labeled, in that they each have an individual pixel value corresponding ranging from 1 to the total number of masks detected. To help with downstream processing, we generate binary masks in Fiji, by converting to 255 all pixels with a value above 0. This makes it easier to use these masks with functions such as "Analyze Particles" and most selection functions.
+These filtered mask images are then imported into Fiji. In these images, masks are labeled, in that they each have an individual pixel value corresponding ranging from 1 to the total number of masks detected. To help with downstream processing, we generate binary masks in Fiji, by converting to 255 all pixels with a value above 0. This makes it easier to use these masks with functions such as "Analyze Particles" and most selection functions. We then obtain two images, one with binary masks of WT cells, one with binary masks of KO cells.
 
 
 
@@ -51,7 +51,13 @@ First we determine a "reasonable" estimated background to include the optical as
 While this is a manual step requiring human intervention, in the context of a multiwell plate image with a high content system, it has generally allowed for more robust background subtraction, requiring less well-specific or image-specific intervention further down the pipeline. If imaging only a small number of wells or slides, and testing few antibodies, then more common background subtraction procedures, such a local rolling-ball background subtraction, or acquiring background images on different areas of the slide/dish, may be easier and fully applicable.
 
 
-Once this background image is selected  we save it as a separate image file and we calculate its median pixel intensity value. We will use it by scaling its intensity with an estimated scalar determined from each test antibody image ("_w3"). For each image, we generate an Otsu thresholded binary image, and merge that image with the binary masks image generated from the Cellpose masks image. In this merged binary image, all pixels with a value of 255 should correspond to fluorescent signal, whereas all pixels with a value of 0 should corresponding to the background of this particular image. We then measure the median of the background area of this image
+Once this background image is selected we save it as a separate image file and we calculate its median pixel intensity value. We will use it by scaling its intensity with an estimated scalar determined from each test antibody image ("_w3"). For each image, we generate an Otsu thresholded binary image, and merge that image with the binary masks image generated from the Cellpose masks image. In this merged binary image, all pixels with a value of 255 should correspond to fluorescent signal, whereas all pixels with a value of 0 should corresponding to the background of this particular image. We then measure the median of the background area of this image. We then divide this value with the median value of the selected minimum intensity projection background image. The resulting value is a scalar which is then used as a multiplier for the minimum intensity projection background image. The resulting image (minimum intensity projection * median pixel intensity of background area of the image / median pixel intensity of minimum intensity projection image) is then subtracted from the raw antibody image, resulting in a backgrounded subtracted image.
+
+This background subtracted image will then be used to extract fluorescence intensity values within cell masks.
+
+### Quantitative data extraction
+
+For each background subtracted test antibody image, we open all other corresponding images, meaning raw images from DAPI, Cellmask Green, Cellmask Red, the WT binary masks image, and the KO binary masks image. 
 
 
 
