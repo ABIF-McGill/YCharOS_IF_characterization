@@ -1,10 +1,10 @@
 # YCharOS_IF_characterization
 A pipeline to analyze IF images for antibody characterization
 
-The experimental approach is described in [Scaling of an antibody validation procedure enables quantification of antibody performance in major research applications](https://elifesciences.org/articles/91645)
+The experimental approach is described in [Scaling of an antibody validation procedure enables quantification of antibody performance in major research applications](https://elifesciences.org/articles/91645) (Ayoubi et al., Elife, 2023).
 
 
-In a recently submitted follow up manuscript, we use quantitative image analysis to measure antibody labeling efficacy for immunofluorescence (IF) labeling. The outline, demo images, and scripts are contained within this repository. 
+In a recently submitted follow-up manuscript, we use quantitative image analysis to measure antibody labeling efficacy for immunofluorescence (IF) labeling. The outline, demo images, and scripts are contained within this repository. 
 
 
 ## Background
