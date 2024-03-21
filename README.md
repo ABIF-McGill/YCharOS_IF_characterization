@@ -26,7 +26,7 @@ Each image set contains the name of the plate (e.g. "Plate_61_TGM2_"), the coord
 
 There are two main scripts to the analysis pipeline. 
 
-First, a batch processing script written in python applies the Cellpose v1.1.1 segmentation algorithm to a folder of images, specifically on images with the suffix _w2 and _w4. After segmentation, an erode function is applied to spatially separate each cell, which helpful for downstream processing in Fiji, generating "filtered_cp_masks" images
+First, a batch processing script written in python applies the Cellpose v1.0.2 segmentation algorithm to a folder of images, specifically on images with the suffix _w2 and _w4. After segmentation, an erode function is applied to spatially separate each cell, which helpful for downstream processing in Fiji, generating "filtered_cp_masks" images
 
 Secondly, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run. This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
 
