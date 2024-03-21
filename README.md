@@ -7,7 +7,7 @@ The experimental approach is described in [Scaling of an antibody validation pro
 In a recently submitted follow-up manuscript, we use quantitative image analysis to measure antibody labeling efficacy for immunofluorescence (IF) labeling. The outline, demo images, and scripts are contained within this repository. 
 
 
-## Background
+
 The following is a general approach to quantifying antibody labeling efficacy in the context of immunofluorescence labeling. 
 
 First, for a given target, a cell line in which the target protein has been genetically knocked out is required, along with the control cell line in which target expression is affected. For example, to test the efficacy of an antibody against the protein TCM2, one would need a TCM2 knockout cell line (here referred to as KO cells), as well as the parental cell line in which TCM2 expression is unaffected (here referred to as WT cells), in order to have comparable cellular backgrounds. Samples are prepared by labelling WT cells with Cell Mask Green, and KO cells with Cell Mask Red, and then co-culturing labelled WT and KO cells in the same dish or wells. Since IF experiments are prone to experimental variability, given the multi-step nature of these protocols, co-culturing drastically minimizes discrepancies in labeling efficiency due to accuracy limits of equipment and steps as well as manipulation errors.
@@ -19,6 +19,20 @@ Each image set contains the name of the plate (e.g. "Plate_61_TGM2_"), the coord
 * "_w2" for Cell mask Green (indicating WT cells)
 * "_w3" for AlexaFluor-568  (test antibody labeling)
 * "_w4" for Cell mask Red (indicating KO cells)
+
+
+
+## Test the pipeline
+
+There are two main scripts to the analysis pipeline. 
+
+First, a batch processing script written in python applies the Cellpose v1.1.1 segmentation algorithm to a folder of images, specifically on images with the suffix _w2 and _w4. After segmentation, an erode function is applied to spatially separate each cell, which helpful for downstream processing in Fiji, generating "filtered_cp_masks" images
+
+Secondly, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run. This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
+
+
+
+
 
 
 In the folder "Main_IMX_analysis_scripts", there are the scripts used for analysis of all antibodies tested to date by YCharOS, which absolutely require the file format described above. We will generate amended scripts to make it more accessible to users with different file formats. 
