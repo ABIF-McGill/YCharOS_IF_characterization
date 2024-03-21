@@ -57,7 +57,19 @@ This background subtracted image will then be used to extract fluorescence inten
 
 ### Quantitative data extraction
 
-For each background subtracted test antibody image, we open all other corresponding images, meaning raw images from DAPI, Cellmask Green, Cellmask Red, the WT binary masks image, and the KO binary masks image. 
+For each background subtracted test antibody image, we open all other corresponding images, meaning raw images from DAPI, Cellmask Green, Cellmask Red, the WT binary masks image, and the KO binary masks image. We measure the pixel intensity data in each image for each WT mask and each KO mask. While the intensity information of the background subtracted test antibody image is used for calculating a WT/KO ratio, used as a measure of antibody efficacy, the intensity information from other channels can be used to discard objects which may have been detected in error. For example, any object with saturating pixels in any channel should probably be discarded, since that saturating object may indicate debris, cell death, or other issues with that cell, rendering it unsuitable to be included in analysis. Intensity information from the DAPI channel can be used to discard objects which do not appear to have a DAPI stained nucleus, suggesting that those objects aren't cells, etc. 
+
+We collect Area, Mean, Median, XY coordinates (using the centroid option), Min, Max for the antibody image, and then collect Min, Max, and Median for all other channels into one table per plate.
+
+### Ratio calculations, plotting
+
+We calculate the WT/KO ratio in two ways. First, we calculate a median value of the intensities in all KO cells, then calculate a ratio for each WT cell to that median KO value. With high content imaging and automated analysis, this generates 100s to 1000s of datapoints, each corresponding to one cell, per tested antibody. 
+
+Alternatively, for each image, we calculate the median value of the intensities of all WT cells in that image, and then the median value of the intensites in all KO cells, and simply plot the ratio of those two values (WT / KO). Each datapoint thus represents the ratio of medians of all cells within an image, and a dataset is built from multiple images. 
+
+These calculations are relatively simple, and can be done in any data analysis software. 
+
+
 
 
 
