@@ -9,7 +9,7 @@ library(reshape2)
 
 #setwd("")
 
-data <- read.csv('Results_w3_intensities_2024222_0_abNames_cp2_test_plt46.csv')
+data <- read.csv('')
 
 
 data$well_scene <- paste(data$well, data$scene, sep="_")
