@@ -89,13 +89,30 @@ filtered cellpose masks (small objects removed, objects split on outline)
 
 ### Batch processing data extraction, and generating images with cell outlines, in Fiji
 
+**Background subtraction**
+The main analysis script requires an image of a representative background, in order to correct for optical aberrations, background intensity, etc. In our hands, we used the Minimum Intensity Projection of all images within a well. We generate a Minimum Intensity Projection for all wells, and manually select the most representative - usually a well where cells are sparse enough. A Minimum Intensity Projection image of multiple images with sparse cells generally translates to an image where each pixel will roughly correspond to background intensity. 
+
+To help with this, you can run the script **---make_background_thing**. It will open all _w3.tif images, make a stack out of them, and make a minimum intensity projection for each well (in our experiments, we acquire 9 image sets per well). From the resulting stack of minimum intensity projection images, select the best one (most even), duplicate and save as 
+
+bg_baseline.tif
+
+<br>
+
+Note that to run the script with the demo data, we have provided a bg_baseline.tif image already.
+
+<br>
+
+**Processing and data extraction**
+
+<br>
+
 **main_ycharos_IMX_images_script_Fiji.ijm**
 
-Secondly, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run, and should be generated for each plate - alternatively, a background image collected on the microscope on a sample without cells or debris can also be used, as long as it is named "bg_baseline.tif"
+Next, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run, and should be generated for each plate - alternatively, a background image collected on the microscope on a sample without cells or debris can also be used, as long as it is named "bg_baseline.tif"
 
 This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
 
-
+With the stacks_and_outlines images, one can visually inspect each image and generate cropped images for visual purposes, using the script "cropping_and_figure_panels.ijm"
 
 <br>
 
