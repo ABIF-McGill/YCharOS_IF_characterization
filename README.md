@@ -24,18 +24,56 @@ Each image set contains the name of the plate (e.g. "Plate_61_TGM2_"), the coord
 
 ## Test the pipeline
 
-There are two main scripts to the analysis pipeline. 
+There are two main scripts to the analysis pipeline. In the folder "Main_IMX_analysis_scripts", there are the scripts used for analysis of all antibodies tested to date by YCharOS, which absolutely require the file format described above. We will generate amended scripts to make it more accessible to users with different file formats. 
 
+
+### Batch processing cellpose segmentation in a python script
 First, a batch processing script written in python applies the Cellpose v1.0.2 segmentation algorithm to a folder of images, specifically on images with the suffix _w2 and _w4. After segmentation, an erode function is applied to spatially separate each cell, which helpful for downstream processing in Fiji, generating "filtered_cp_masks" images
 
-Secondly, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run. This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
+<br>
+
+**cellpose_batch_ycharos_IMX_images.py**
+
+
+<br>
+
+
+**Recommended conda environments:**
+
+Python 3.8
+
+cellpose 1.0.2
+
+scikit-image 0.21.0
+
+torch 1.8.1   # ideally with CUDA toolkit, in our case 10.1 for NVIDIA GeForce RTX 2080 
+
+<br>
+
+
+**Adjust the following variables:**
+* Set `folder_path =` to the path containing the raw images save in the format described above.
+* Set `diam_run =` to the approximate diameter of cells (you can determine the approximate size of cells in Fiji)
+* Set `model_run =` to `'cyto'` to detect whole cells
+* Ideally, leave `suffix` to `r"*w[2,4].TIF"` in order to segment cells in channels 2 and 4 only
+
+<br>
+
+Then, run the script. A system with a data-capable GPU (NVIDIA) is recommended, but not necessary. Running the script without GPU-acceleration is possible, but slower.
+
+<br>
+
+### Batch processing data extraction, and generating images with cell outlines, in Fiji
+
+**main_ycharos_IMX_images_script_Fiji.ijm**
+
+Secondly, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run, and should be generated for each plate - alternatively, a background image collected on the microscope on a sample without cells or debris can also be used, as long as it is named "bg_baseline.tif"
+
+This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
 
 
 
-
-
-
-In the folder "Main_IMX_analysis_scripts", there are the scripts used for analysis of all antibodies tested to date by YCharOS, which absolutely require the file format described above. We will generate amended scripts to make it more accessible to users with different file formats. 
+<br>
 
 
 ## Main steps
@@ -51,7 +89,7 @@ After segmentation, and within the same script, we reload each "cp_mask" image a
 These filtered mask images are then imported into Fiji. In these images, masks are labeled, in that they each have an individual pixel value corresponding ranging from 1 to the total number of masks detected. To help with downstream processing, we generate binary masks in Fiji, by converting to 255 all pixels with a value above 0. This makes it easier to use these masks with functions such as "Analyze Particles" and most selection functions. We then obtain two images, one with binary masks of WT cells, one with binary masks of KO cells.
 
 
-
+<br>
 
 
 ### Background subtraction
@@ -69,11 +107,15 @@ Once this background image is selected we save it as a separate image file and w
 
 This background subtracted image will then be used to extract fluorescence intensity values within cell masks.
 
+<br>
+
 ### Quantitative data extraction
 
 For each background subtracted test antibody image, we open all other corresponding images, meaning raw images from DAPI, Cellmask Green, Cellmask Red, the WT binary masks image, and the KO binary masks image. We measure the pixel intensity data in each image for each WT mask and each KO mask. While the intensity information of the background subtracted test antibody image is used for calculating a WT/KO ratio, used as a measure of antibody efficacy, the intensity information from other channels can be used to discard objects which may have been detected in error. For example, any object with saturating pixels in any channel should probably be discarded, since that saturating object may indicate debris, cell death, or other issues with that cell, rendering it unsuitable to be included in analysis. Intensity information from the DAPI channel can be used to discard objects which do not appear to have a DAPI stained nucleus, suggesting that those objects aren't cells, etc. 
 
 We collect Area, Mean, Median, XY coordinates (using the centroid option), Min, Max for the antibody image, and then collect Min, Max, and Median for all other channels into one table per plate.
+
+<br>
 
 ### Ratio calculations, plotting
 
