@@ -63,6 +63,30 @@ Then, run the script. A system with a data-capable GPU (NVIDIA) is recommended, 
 
 <br>
 
+
+
+
+
+![Plate46 Rab5C_C07_s2_w2-RAW-2](https://github.com/ABIF-McGill/YCharOS_IF_characterization/assets/64212264/2ca3acf2-be27-4bef-a8fc-f1f665578554)
+
+raw .w2 image (wt cells)
+
+<br>
+
+
+![Plate46 Rab5C_C07_s2_w2_cp_masks_cp_masks-2](https://github.com/ABIF-McGill/YCharOS_IF_characterization/assets/64212264/900cf19e-ca2f-4621-bff9-5a9967464648)
+
+cellpose masks ('cyto' model, 35 pixel diameter)
+
+
+<br>
+
+![Plate46 Rab5C_C07_s2_w2_filtered_cp_masks png (RGB)-2](https://github.com/ABIF-McGill/YCharOS_IF_characterization/assets/64212264/43308162-9fc9-4d92-8fc0-d0bd54f5bab9)
+
+filtered cellpose masks (small objects removed, objects split on outline)
+
+<br>
+
 ### Batch processing data extraction, and generating images with cell outlines, in Fiji
 
 **main_ycharos_IMX_images_script_Fiji.ijm**
