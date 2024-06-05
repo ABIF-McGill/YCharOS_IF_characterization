@@ -52,10 +52,11 @@ torch 1.8.1   # ideally with CUDA toolkit, in our case 10.1 for NVIDIA GeForce R
 
 See **requirements.txt** for all packages and dependencies needed for this script. 
 
+<br>
 
 **Adjust the following variables:**
 
-* Set `folder_path =` to the path to the folder containing the raw images saved in the format described above (as a demo, you can download and use the images contained in **demo_data_without_masks**
+* Set `folder_path =` to the path to the folder containing the raw images saved in the format described above - as a demo, you can download and use the images contained in **demo_data_without_masks**
 * Set `diam_run =` to the approximate diameter of cells (you can determine the approximate size of cells in Fiji)
 * Set `model_run =` to `'cyto'` to detect whole cells
 * Ideally, leave `suffix` to `r"*w[2,4].TIF"` in order to segment cells in channels 2 and 4 only
