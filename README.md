@@ -24,7 +24,7 @@ Each image set contains the name of the plate (e.g. "Plate_61_TGM2_"), the coord
 
 ## Test the pipeline
 
-There are two main scripts to the analysis pipeline. In the folder "Main_IMX_analysis_scripts", there are the scripts used for analysis of all antibodies tested to date by YCharOS, which absolutely require the file format described above. We will generate amended scripts to make it more accessible to users with different file formats. 
+There are two main scripts to the analysis pipeline. In this repository, there are the scripts used for analysis of all antibodies tested to date by YCharOS, which absolutely require the file format described above. We will generate amended scripts to make it more accessible to users with different file formats. 
 
 
 ### Batch processing cellpose segmentation in a python script
@@ -38,7 +38,7 @@ First, a batch processing script written in python applies the Cellpose v1.0.2 s
 <br>
 
 
-**Recommended conda environments:**
+Recommended conda environments:
 
 Python 3.8
 
@@ -50,9 +50,12 @@ torch 1.8.1   # ideally with CUDA toolkit, in our case 10.1 for NVIDIA GeForce R
 
 <br>
 
+See **requirements.txt** for all packages and dependencies needed for this script. 
+
 
 **Adjust the following variables:**
-* Set `folder_path =` to the path containing the raw images save in the format described above.
+
+* Set `folder_path =` to the path to the folder containing the raw images saved in the format described above (as a demo, you can download and use the images contained in **demo_data_without_masks**
 * Set `diam_run =` to the approximate diameter of cells (you can determine the approximate size of cells in Fiji)
 * Set `model_run =` to `'cyto'` to detect whole cells
 * Ideally, leave `suffix` to `r"*w[2,4].TIF"` in order to segment cells in channels 2 and 4 only
@@ -108,7 +111,9 @@ Note that to run the script with the demo data, we have provided a bg_baseline.t
 
 **main_ycharos_IMX_images_script_Fiji.ijm**
 
-Next, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run, and should be generated for each plate - alternatively, a background image collected on the microscope on a sample without cells or debris can also be used, as long as it is named "bg_baseline.tif"
+Next, a Fiji script strictly takes in that folder of images containing all raw images as well as filtered_cp_masks images. For this demo, you can use the cellpose masks generated in the previous step or download the images and cellpose masks found in the folder **demo_data_with_cp_masks**
+
+In the demo folder, a background intensity image calculated with the Minimum Intensity Projection is included in the folder ("bg_baseline.tif"). A background intensity image of that filename is required for the script to run, and should be generated for each plate - alternatively, a background image collected on the microscope on a sample without cells or debris can also be used, as long as it is named "bg_baseline.tif"
 
 This script will generate a table of data extracted from the images, collection of intermediate images, as well as stacks from which to generate cropped images for display purposes, showing intenstity data as well as outlines for WT and KO cells.
 
